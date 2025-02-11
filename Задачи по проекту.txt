@@ -4,6 +4,7 @@
 1. Активное изучение алгоритма Хаффмана (вот пару ссылок
 1) https://habr.com/ru/articles/144200/
 2) https://users.math-cs.spbu.ru/~okhotin/teaching/algorithms_2019/okhotin_algorithms_2019_l10.pdf
+3) https://habr.com/ru/articles/438512/
 ) Дедлайн 13.02. 13.02 собираемся и начинаем прогать.
 -----------
 Выполненные:
