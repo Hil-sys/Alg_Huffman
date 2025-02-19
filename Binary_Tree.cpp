@@ -21,6 +21,7 @@ int main() {
     ifstream inputFile("input.txt");
     unordered_map<char, int> frequencyMap;
     char ch;
+    int MAXVAL = 0, MAXSIZE = 0;
 
     while (inputFile.get(ch)) {
         frequencyMap[ch]++;
@@ -38,17 +39,20 @@ int main() {
     cout << "Character Frequencies (sorted):\n";
     for (const auto& freq : frequencies) {
         cout << freq.character << ": " << freq.count << endl;
+        MAXVAL += freq.count;
+        MAXSIZE++;
     }
 
-    int MAXSIZE = 50, MAXVAL = 1275;
-    int* a = (int*)malloc(MAXSIZE *sizeof(int));
-    func(a, MAXSIZE);
+    /*int* a = (int*)malloc(MAXSIZE *sizeof(int));
+    func(a, MAXSIZE);*/
+    char a = frequencies[1].character;
     BSTree myTree;
-    myTree.Insert(MAXVAL);
-    for (int i=MAXSIZE-1; i>0;i-- ){
-        myTree.Insert(a[i]);
+    myTree.Insert(MAXVAL, a);
+    for (int i = MAXSIZE - 1; i > 0; i--) {
+        myTree.Insert(frequencies[i].count, frequencies[i].character);
+        myTree.Print();
     };
-    myTree.Print();
+    
     
     return 0;
 }
