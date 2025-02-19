@@ -17,6 +17,7 @@ bool compareFrequency(const Frequency& a, const Frequency& b) {
 }
 
 int main() {
+    setlocale(LC_ALL, "Russian");
     ifstream inputFile("input.txt");
     unordered_map<char, int> frequencyMap;
     char ch;
