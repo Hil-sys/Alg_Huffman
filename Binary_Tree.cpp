@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include "BSTree.h"
-#include "T.h"
 #include <fstream>
 #include <unordered_map>
 #include <vector>
@@ -42,17 +41,6 @@ int main() {
         MAXVAL += freq.count;
         MAXSIZE++;
     }
-
-    /*int* a = (int*)malloc(MAXSIZE *sizeof(int));
-    func(a, MAXSIZE);*/
-    char a = frequencies[1].character;
-    BSTree myTree;
-    myTree.Insert(MAXVAL, a);
-    for (int i = MAXSIZE - 1; i > 0; i--) {
-        myTree.Insert(frequencies[i].count, frequencies[i].character);
-        myTree.Print();
-    };
-    
     
     return 0;
 }
