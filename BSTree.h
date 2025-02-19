@@ -56,7 +56,7 @@ void bincodes(TreeNode* root, string code, unordered_map<char, string>& codes) {
     bincodes(root->right, code + "1", codes);
 }
 
-void print(const unordered_map<char, string>& codes) {
+void printcode(const unordered_map<char, string>& codes) {
     cout << "Codes:" << endl;
     for (const auto& pair : codes) {
         cout << "'" << pair.first << "' : " << pair.second << endl;
