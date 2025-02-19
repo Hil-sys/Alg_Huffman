@@ -16,8 +16,6 @@ public:
     // member functions
     void Print();
     void Insert(int val);
-    void Create(int* arr, int size, int flag);
-    void FirstCreate(int val1, int val2);
     
 private:
     TreeNode* root;
@@ -35,9 +33,9 @@ void BSTree::Print(){
 
 /// Print the subtree starting at '*node'
 std::string BSTree::SubTreeAsString(TreeNode* node){
-    std::string leftStr = (node->left == nullptr) ? "{}" : SubTreeAsString(node->left);
-    std::string rightStr = (node->right == nullptr) ? "{}" : SubTreeAsString(node->right);
-    std::string result = "{" + std::to_string(node->data) + ", " + leftStr + ", " + rightStr + "}";
+    std::string leftStr = (node->left == nullptr) ? "" : (SubTreeAsString(node->left) + "<--");
+    std::string rightStr = (node->right == nullptr) ? "" : ("-->" + SubTreeAsString(node->right));
+    std::string result = leftStr + std::to_string(node->data) + rightStr;
     return result;
 }
 
@@ -49,38 +47,26 @@ void BSTree::Insert(int val) {
         this->Insert(val, this->root);
     }
 }
-
 /// Insert a new value into the subtree starting at node
 void BSTree::Insert(int val, TreeNode* node) {
     // Check if val is < or > this node's value
-    if(val < node->data){
+    if(val <= (node->data)/2){
         if(node->left == nullptr){
             // Make a new node as the left child of this node
             node->left = new TreeNode(val);
+            node->right = new TreeNode(node->data- val);
         } else{
             // Recursively call Insert() on this node's left child
-            this->Insert(val, node->left);
+            this->Insert(val, node->right);
         }
     } else{
         if(node->right == nullptr){
             // Make a new node as the right child of this node
             node->right = new TreeNode(val);
+            node->left = new TreeNode(node->data- val);
         } else{
             // Recursively call Insert() on this node's right child
-            this->Insert(val, node->right);
+            this->Insert(val, node->left);
         }
-    }
-}
-
-void BSTree::Create(int* arr, int size, int flag){
-    root = new TreeNode(arr[0]+arr[1]);
-    root->left = new TreeNode(arr[0]);
-    root->right = new TreeNode(arr[1]);
-    arr[0] = arr[0]+arr[1];
-    if (size > 1){
-        for (int i = flag+1; i<=size; i++){
-            arr[i-flag] =arr[i]; 
-        }
-    Create(arr, size-1, flag+1);
     }
 }

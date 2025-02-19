@@ -1,74 +1,54 @@
 #include <iostream>
-#include <queue>
+#include <string>
+#include "BSTree.h"
+#include "T.h"
+#include <fstream>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
 using namespace std;
-
-template <typename T>
-class Node {
-public:
-    T data;
-    Node* left;
-    Node* right;
-    Node(T value) : data(value), left(NULL), right(NULL) {}
+struct Frequency {
+    char character;
+    int count;
 };
 
-
-template <typename T>
-class BinaryTree {
-private:
-    Node<T>* root;
-    bool searchRecursive(Node<T>* current, T value) {
-        if (current == NULL) return false;
-        if (current->data == value) return true;
-        return searchRecursive(current->left, value) || searchRecursive(current->right, value);
-    }
-public:
-    BinaryTree() : root(NULL) {}
-    void insertNode(T value) {
-        Node<T>* newNode = new Node<T>(value);
-
-        if (root == NULL) {
-            root = newNode;
-            return;
-        }
-
-        queue<Node<T>*> q;
-        q.push(root);
-
-        while (!q.empty()) {
-            Node<T>* current = q.front();
-            q.pop();
-
-            if (current->left == NULL) {
-                current->left = newNode;
-                return;
-            } else {
-                q.push(current->left);
-            }
-
-            if (current->right == NULL) {
-                current->right = newNode;
-                return;
-            } else {
-                q.push(current->right);
-            }
-        }
-    }
-    bool search(T value) {
-        return searchRecursive(root, value);
-    }
-};
+bool compareFrequency(const Frequency& a, const Frequency& b) {
+    return a.count < b.count; 
+}
 
 int main() {
-    BinaryTree<int> tree;
-    tree.insertNode(1);
-    tree.insertNode(2);
-    tree.insertNode(3);
-    tree.insertNode(4);
-    tree.insertNode(5);
-    tree.insertNode(6);
+    setlocale(LC_ALL, "Russian");
+    ifstream inputFile("input.txt");
+    unordered_map<char, int> frequencyMap;
+    char ch;
 
-    cout << "Searching for 7: " << (tree.search(7) ? "Found" : "Not Found") << endl;
-    cout << "Searching for 6: " << (tree.search(6) ? "Found" : "Not Found") << endl;
+    while (inputFile.get(ch)) {
+        frequencyMap[ch]++;
+    }
 
+    inputFile.close();
+
+    vector<Frequency> frequencies;
+    for (const auto& pair : frequencyMap) {
+        frequencies.push_back({ pair.first, pair.second });
+    }
+
+    sort(frequencies.begin(), frequencies.end(), compareFrequency);
+
+    cout << "Character Frequencies (sorted):\n";
+    for (const auto& freq : frequencies) {
+        cout << freq.character << ": " << freq.count << endl;
+    }
+
+    int MAXSIZE = 50, MAXVAL = 1275;
+    int* a = (int*)malloc(MAXSIZE *sizeof(int));
+    func(a, MAXSIZE);
+    BSTree myTree;
+    myTree.Insert(MAXVAL);
+    for (int i=MAXSIZE-1; i>0;i-- ){
+        myTree.Insert(a[i]);
+    };
+    myTree.Print();
+    
     return 0;
 }
