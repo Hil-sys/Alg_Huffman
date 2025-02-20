@@ -9,10 +9,12 @@
 using namespace std;
     
     int main() {
+        setlocale(LC_ALL, "Russian");
+        BSTree myTree;
         ifstream inputFile("input.txt");
         string input;
         if (getline(inputFile, input)) {
-            cout << "Считанная строка: " << input << endl;
+            cout << "Input: " << input << endl;
         }
         inputFile.close();
 
@@ -22,12 +24,12 @@ using namespace std;
             datamap[ch]++;
         }
 
-        TreeNode* root = buildTree(datamap);
+        TreeNode* root = myTree.BuildTree(datamap);
 
         unordered_map<char, string> codes;
-        bincodes(root, "", codes);
+        myTree.bincodes(root, "", codes);
 
-        printcode(codes);
+        myTree.printcode(codes);
 
         return 0;
     }
