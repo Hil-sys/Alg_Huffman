@@ -27,8 +27,6 @@ public:
     TreeNode* BuildTree(const unordered_map<char, int>& freqMap);
     void bincodes(TreeNode* root, string code, unordered_map<char, string>& codes);
     void printcode(const unordered_map<char, string>& codes);
-    void compressFile(const string& inputFile, const string& outputFile, const unordered_map<char, string>& codes);
-    void decompressFile(const string& inputFile, const string& outputFile, TreeNode* root);
 private:
     TreeNode* root;
 };
@@ -75,37 +73,57 @@ void BSTree::printcode(const unordered_map<char, string>& codes) {
 }
 
 void convertToBinary(const unordered_map<char, string>& codes, const string& inputFile, const string& outputFile) {
-    // Открываем файл для чтения
     ifstream inFile(inputFile);
-    if (!inFile.is_open()) {
-        cerr << "Ошибка: Не удалось открыть файл " << inputFile << endl;
-        return;
-    }
 
-    // Открываем файл для записи
     ofstream outFile(outputFile);
-    if (!outFile.is_open()) {
-        cerr << "Ошибка: Не удалось открыть файл " << outputFile << endl;
-        inFile.close();
-        return;
-    }
 
     char ch;
-    // Читаем файл посимвольно
     while (inFile.get(ch)) {
-        // Ищем символ в карте кодов
         auto it = codes.find(ch);
         if (it != codes.end()) {
-            // Если символ найден, записываем его бинарный код в выходной файл
             outFile << it->second;
-        }
-        else {
-            // Если символ не найден, можно записать сообщение об ошибке или пропустить его
-            cerr << "Предупреждение: Символ '" << ch << "' не найден в карте кодов." << endl;
         }
     }
 
-    // Закрываем файлы
+    inFile.close();
+    outFile.close();
+}
+
+void convertToBin(const unordered_map<char, string>& codes, const string& inputFile, const string& outputFile) {
+
+    ifstream inFile(inputFile);
+    ofstream outFile(outputFile, ios::binary);
+
+    char ch;
+    vector<bool> bitStream; 
+
+    while (inFile.get(ch)) {
+        auto it = codes.find(ch);
+        if (it != codes.end()) {
+            for (char bit : it->second) {
+                bitStream.push_back(bit == '1');
+            }
+        }
+    }
+
+    unsigned char buffer = 0;
+    int bitCount = 0;
+
+    for (bool bit : bitStream) {
+        buffer |= (bit << (7 - bitCount));
+        bitCount++;
+
+        if (bitCount == 8) {
+            outFile.write(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+            buffer = 0;
+            bitCount = 0;
+        }
+    }
+
+    if (bitCount > 0) {
+        outFile.write(reinterpret_cast<char*>(&buffer), sizeof(buffer));
+    }
+
     inFile.close();
     outFile.close();
 }

@@ -14,13 +14,10 @@ int main() {
     ifstream inputFile("input.txt");
     string input;
     if (getline(inputFile, input)) {
-        cout << "Input: " << input << endl;
     }
     inputFile.close();
 
     unordered_map<char, int> datamap;
-
-
 
     for (char ch : input) {
         datamap[ch]++;
@@ -33,6 +30,7 @@ int main() {
 
     myTree.printcode(codes);
     convertToBinary(codes, "input.txt", "output.txt");
+    /*convertToBin(codes, "input.txt", "output.bin");*/
 
     return 0;
 }
