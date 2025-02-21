@@ -127,3 +127,36 @@ void convertToBin(const unordered_map<char, string>& codes, const string& inputF
     inFile.close();
     outFile.close();
 }
+
+void compressBMP(const string& inputFile, const string& outputFile) {
+    ifstream inFile(inputFile, ios::binary);
+    ofstream outFile(outputFile, ios::binary);
+
+    const int headerSize = 54;
+    char header[headerSize];
+    inFile.read(header, headerSize);
+
+    outFile.write(header, headerSize);
+
+    unordered_map<char, int> freqMap;
+    char ch;
+    while (inFile.get(ch)) {
+        freqMap[ch]++;
+    }
+    BSTree tree;
+    TreeNode* root = tree.BuildTree(freqMap);
+
+    unordered_map<char, string> codes;
+    tree.bincodes(root, "", codes);
+
+    for (const auto& pair : codes) {
+        outFile << pair.first << pair.second << endl;
+    }
+
+    inFile.clear();
+    inFile.seekg(headerSize, ios::beg);
+    convertToBin(codes, inputFile, outputFile);
+
+    inFile.close();
+    outFile.close();
+}

@@ -11,8 +11,11 @@ using namespace std;
 int main() {
     setlocale(LC_ALL, "Russian");
     BSTree myTree;
-    ifstream inputFile("input.txt");
+    ifstream inputFile("input2.txt");
     string input;
+    string inputFilebmp = "input5.bmp";
+    string outputFile = "compressed.bmp";
+
     if (getline(inputFile, input)) {
     }
     inputFile.close();
@@ -29,8 +32,9 @@ int main() {
     myTree.bincodes(root, "", codes);
 
     myTree.printcode(codes);
-    convertToBinary(codes, "input.txt", "output.txt");
-    /*convertToBin(codes, "input.txt", "output.bin");*/
+    convertToBinary(codes, "input2.txt", "output.txt");
+    compressBMP(inputFilebmp, outputFile);
+    convertToBin(codes, "input2.txt", "output.bin");
 
     return 0;
 }
